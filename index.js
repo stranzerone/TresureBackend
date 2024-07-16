@@ -14,7 +14,7 @@ const DATABASE_URI = process.env.DATABASE_URI;
 const FRONTEND_URI = process.env.FRONTEND;
 
 app.use(bodyParser.json());
-app.use(cors({ origin: FRONTEND_URI }));
+app.use(cors({ origin: [FRONTEND_URI,"http://localhost:3000" ] }));
 
 const connectDatabase = async () => {
   try {

@@ -10,5 +10,5 @@ routes.post("/addTransaction",newTransaction)
 
 routes.get("/allTransactions",getAllTransactions)
 
-routes.delete("/deleteTransaction/:TransactionId",deleteOne)
+routes.post("/deleteTransaction/:TransactionId",deleteOne)
 

@@ -9,16 +9,19 @@ return newNum
 }
 
 
+const date = new Date().toUTCString().split(' ').slice(0,3).join(' ')
+
+console.log(date)
 
 export const newTransaction = async(req,res)=>{
 
 try{
 const data = req.body
     console.log(req.body)
-    const transaction = new Transaction({TransactionId:transactionIdGenrate(),Amount:data.amount,Type:data.amountType,Remark:data.remark})
+    const transaction = new Transaction({TransactionId:transactionIdGenrate(),Amount:data.amount,Type:data.amountType,Name:data.remark,Active:true,CardDate:date})
 
    await transaction.save()
-   console.log(transaction)
+  
 res.status(201).json("Transaction Added successfully")
 
 }catch(error){
@@ -33,11 +36,9 @@ export const getAllTransactions = async(req,res)=>{
 
     try{
     const data = req.body
-        console.log(req.body)
         const AllTransactions = await Transaction.find({})
     
        
-       console.log(AllTransactions)
     res.status(201).json(AllTransactions)
     
     }catch(error){
@@ -52,7 +53,7 @@ export const getAllTransactions = async(req,res)=>{
         try{
         const {TransactionId}  =req.params
             console.log(TransactionId)
-            const deletedTransaction = await Transaction.findOneAndDelete({TransactionId})
+            const deletedTransaction = await Transaction.findOneAndUpdate({TransactionId},{Active:false})
         
            
            console.log(deletedTransaction)
@@ -69,8 +70,8 @@ export const getAllTransactions = async(req,res)=>{
 
         export const Balance = async (req, res) => {
             try {
-              const creditTransactions = await Transaction.find({ Type: 'CREDIT' });
-              const debitTransactions = await Transaction.find({ Type: 'DEBIT' });
+              const creditTransactions = await Transaction.find({ Type: 'CREDIT',Active:true });
+              const debitTransactions = await Transaction.find({ Type: 'DEBIT',Active:true });
           
               let totalCredit = 0;
               let totalDebit = 0;
@@ -85,8 +86,7 @@ export const getAllTransactions = async(req,res)=>{
           
               const currentBalance = totalCredit - totalDebit;
           
-              console.log('Current Balance:', currentBalance);
-              res.status(200).json({ balance: currentBalance });
+              res.status(201).json({ balance: currentBalance });
             } catch (error) {
               res.status(500).json(error);
             }

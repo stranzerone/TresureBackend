@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const transactionSchema = new mongoose.Schema({
 
   TransactionId:{type:String,required:true,unique:true},
- Remark:{type:String},
+ Name:{type:String},
 
   Type:{
 type:String,
@@ -12,8 +12,14 @@ require:true
 
 },
   Amount:{type:Number,require:true},
-  date: Date
+ 
+
+
+Active:{
+  type:Boolean,require:true,default:true
 },
+CardDate:{type:String,require:true}
+}
 
 );
 
